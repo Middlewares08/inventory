@@ -1,5 +1,7 @@
 const express = require('express');
 const cors = require('cors');
+const { authenticate } = require('./middleware/auth');
+const authRoutes = require('./routes/authRoutes');
 const itemRoutes = require('./routes/itemRoutes');
 
 const app = express();
@@ -11,7 +13,8 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
-app.use('/api/items', itemRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/items', authenticate, itemRoutes);
 
 app.use((req, res) => {
   res.status(404).json({ error: 'Not found' });

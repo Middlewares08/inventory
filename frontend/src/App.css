@@ -5,6 +5,22 @@
   font-family: system-ui, sans-serif;
 }
 
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.app-header h1 {
+  margin: 0;
+}
+
+.user-email {
+  margin-right: 0.75rem;
+  color: #666;
+  font-size: 0.875rem;
+}
+
 .error {
   color: #c0392b;
 }
