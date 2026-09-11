@@ -43,6 +43,15 @@ npm run dev
 
 The API listens on `http://localhost:5000` by default. Check `http://localhost:5000/api/health` to confirm it's up and connected to PostgreSQL.
 
+### Authentication
+
+The `create-users` migration seeds a default admin account:
+
+- Email: `admin@example.com`
+- Password: `ChangeMe123!`
+
+Log in via `POST /api/auth/login` (used by the frontend login page) to receive a JWT. All `/api/items` routes require `Authorization: Bearer <token>`. Use `POST /api/auth/register` (itself authenticated) to create additional accounts. **Change or remove the default admin before deploying anywhere real.**
+
 ### Backend scripts
 
 | Command                | Description                              |
@@ -68,15 +77,16 @@ The app runs at `http://localhost:5173` and talks to the backend via `VITE_API_U
 
 Both apps load configuration from a local `.env` file (never committed — see `.env.example` in each folder for the variables to set).
 
-- `backend/.env.example` — PostgreSQL connection details, server port, CORS origin
+- `backend/.env.example` — PostgreSQL connection details, server port, CORS origin, JWT secret/expiry
 - `frontend/.env.example` — `VITE_API_URL`, the backend API base URL
 
 ## Database schema
 
-The initial schema (`backend/migrations/..._create-schema.js`) creates:
+The migrations in `backend/migrations/` create:
 
 - `categories` — item categories
 - `items` — inventory items (SKU, quantity, location, reorder level, category)
 - `stock_movements` — a log of quantity changes per item, used for monitoring stock over time
+- `users` — login accounts (seeded with a default admin, see Authentication above)
 
 Add new tables/columns with `npm run migrate:create <name>` inside `backend/`, then implement `up`/`down` in the generated file.
